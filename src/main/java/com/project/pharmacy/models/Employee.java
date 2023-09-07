@@ -31,4 +31,10 @@ public class Employee {
 
     @Column
     private String office;
+
+    @ManyToOne
+    private Enterprise enterprise;
+
+    @ManyToOne
+    private Admin admin;
 }

@@ -19,4 +19,7 @@ public class Login {
 
     @Column
     private String password;
+
+    @OneToOne(mappedBy = "admin")
+    private Admin admin;
 }

@@ -3,6 +3,8 @@ package com.project.pharmacy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "administrator")
@@ -23,4 +25,13 @@ public class Admin {
 
     @Column
     private String cellPhone;
+
+    @OneToOne
+    private Enterprise enterprise;
+
+    @OneToOne
+    private Login login;
+
+    @OneToMany(mappedBy = "emplyee")
+    private List<Employee> employees;
 }
