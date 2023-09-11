@@ -14,12 +14,15 @@ public class Login {
     private Long id;
 
     @Column
+    private String nickname;
+
+    @Column
     @Email
     private String email;
 
     @Column
     private String password;
 
-    @OneToOne(mappedBy = "admin")
-    private Admin admin;
+    @OneToOne(mappedBy = "login")
+    private User user;
 }

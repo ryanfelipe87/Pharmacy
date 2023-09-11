@@ -18,6 +18,9 @@ public class Enterprise {
     private String cnpj;
 
     @Column
+    private String number;
+
+    @Column
     private String address;
 
     @Column
@@ -26,9 +29,12 @@ public class Enterprise {
     @Column
     private String cep;
 
-    @OneToOne(mappedBy = "admin")
-    private Admin admin;
+    @OneToOne
+    private User user;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "enterprise")
     private List<Employee> employees;
+
+    @OneToMany(mappedBy = "enterprise")
+    private List<Product> products;
 }

@@ -36,5 +36,5 @@ public class Employee {
     private Enterprise enterprise;
 
     @ManyToOne
-    private Admin admin;
+    private User user;
 }

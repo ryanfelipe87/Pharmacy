@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "administrator")
-public class Admin {
+@Table(name = "product")
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,20 +18,18 @@ public class Admin {
     private String name;
 
     @Column
-    private String cpf;
+    private String description;
 
     @Column
-    private String departament;
+    private Double price;
 
     @Column
-    private String cellPhone;
+    private Integer amount;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-    @OneToOne
-    private Login login;
-
-    @OneToMany(mappedBy = "emplyee")
-    private List<Employee> employees;
+    @ManyToMany(mappedBy = "products")
+    private List<CategoryProduct> categoryProducts;
 }
