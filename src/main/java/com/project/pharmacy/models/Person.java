@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "person")
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,14 +31,27 @@ public class User {
     private String cellPhone;
 
     @Column
+    private Double wage;
+
+    @Column
+    private String office;
+
+    @Column
+    private String certification;
+
+    @Column
     private LocalDateTime dateRegister;
 
-    @OneToOne(mappedBy = "user")
-    private Enterprise enterprise;
+    @OneToMany(mappedBy = "person")
+    private List<Purchase> purchaseList;
 
-    @OneToOne
+    @OneToMany(mappedBy = "person")
+    private List<Sale> saleList;
+
+    @OneToOne(mappedBy = "person")
     private Login login;
 
-    @OneToMany(mappedBy = "user")
-    private List<Employee> employees;
+    @OneToOne(mappedBy = "person")
+    private Enterprise enterprise;
+
 }

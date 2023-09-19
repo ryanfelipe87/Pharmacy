@@ -3,6 +3,7 @@ package com.project.pharmacy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -24,12 +25,15 @@ public class Product {
     private Double price;
 
     @Column
-    private Integer amount;
-
-    @ManyToOne
-    @JoinColumn(name = "enterprise_id")
-    private Enterprise enterprise;
+    private LocalDate validity;
 
     @ManyToMany(mappedBy = "products")
-    private List<CategoryProduct> categoryProducts;
+    private List<Purchase> purchases;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Sale> sales;
+
+    @OneToOne(mappedBy = "product")
+    private CategoryProduct categoryProduct;
+
 }

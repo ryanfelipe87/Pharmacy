@@ -3,8 +3,6 @@ package com.project.pharmacy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "enterprise")
@@ -30,11 +28,6 @@ public class Enterprise {
     private String cep;
 
     @OneToOne
-    private User user;
+    private Person person;
 
-    @OneToMany(mappedBy = "enterprise")
-    private List<Employee> employees;
-
-    @OneToMany(mappedBy = "enterprise")
-    private List<Product> products;
 }

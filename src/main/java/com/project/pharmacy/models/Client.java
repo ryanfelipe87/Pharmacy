@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "employee")
-public class Employee {
+@Table(name = "client")
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,20 +22,20 @@ public class Employee {
     private String cpf;
 
     @Column
-    private LocalDate birthDate;
-
-    @Column
     private String cellPhone;
 
     @Column
-    private double wage;
+    private LocalDate birthDate;
 
     @Column
-    private String office;
+    private String zipCode;
 
-    @ManyToOne
-    private Enterprise enterprise;
+    @Column
+    private String address;
 
-    @ManyToOne
-    private User user;
+    @OneToMany(mappedBy = "client")
+    private List<Purchase> purchases;
+
+    @OneToMany(mappedBy = "client")
+    private List<Sale> sales;
 }
