@@ -25,6 +25,6 @@ public class Login {
 
     private String confirmPassword;
 
-    @OneToOne
+    @OneToOne(mappedBy = "login")
     private Person person;
 }

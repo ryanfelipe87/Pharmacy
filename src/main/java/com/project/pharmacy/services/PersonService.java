@@ -12,4 +12,5 @@ public interface PersonService {
     Person createUser(PersonDto personDto);
 
     List<PersonDto> listAll();
+
 }

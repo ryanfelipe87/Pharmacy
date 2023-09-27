@@ -48,7 +48,8 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private List<Sale> saleList;
 
-    @OneToOne(mappedBy = "person")
+    @OneToOne
+    @JoinColumn(name = "login_id")
     private Login login;
 
     @OneToOne(mappedBy = "person")

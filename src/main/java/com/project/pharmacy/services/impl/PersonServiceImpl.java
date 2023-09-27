@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -36,8 +37,32 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<PersonDto> listAll() {
+        List<Person> person = personRepository.findAll();
+        return person.stream()
+                .map(this :: convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public PersonDto findId(Long id){
+        Person person = personRepository.findById(id).orElse(null);
+        if(person != null){
+            return convertToDTO(person);
+        }
         return null;
     }
 
+
+    private PersonDto convertToDTO(Person person){
+        PersonDto personDto = new PersonDto();
+        personDto.setName(person.getName());
+        personDto.setCpf(person.getCpf());
+        personDto.setGender(person.getGender());
+        personDto.setCellPhone(person.getCellPhone());
+        personDto.setDepartment(person.getDepartment());
+        personDto.setWage(person.getWage());
+        personDto.setOffice(person.getOffice());
+        personDto.setCertification(person.getCertification());
+        return personDto;
+    }
 
 }
