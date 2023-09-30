@@ -24,12 +24,12 @@ public class ClientController {
 
     @GetMapping
     public List<ClientDTO> listAll(){
-        return clientService.listAll();
+        return clientService.listAllClients();
     }
 
     @GetMapping("/{id}")
     public ClientDTO findByIdClient(@PathVariable Long id){
-        return clientService.findById(id);
+        return clientService.findClientById(id);
     }
 
     @PutMapping("/{id}")

@@ -10,7 +10,9 @@ public interface ClientService {
 
     ClientDTO createClient(ClientDTO clientDto);
 
-    List<ClientDTO> listAll();
+    List<ClientDTO> listAllClients();
+
+    ClientDTO findClientById(Long id);
 
     ClientDTO updateClient(Long id, ClientDTO clientDTO);
 

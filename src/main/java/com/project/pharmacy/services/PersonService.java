@@ -13,6 +13,8 @@ public interface PersonService {
 
     List<PersonDTO> listAllPerson();
 
+    PersonDTO findPersonById(Long id);
+
     PersonDTO updatePerson(Long id, PersonDTO personDTO);
 
     void deletePerson(Long id);

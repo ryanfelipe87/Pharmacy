@@ -34,20 +34,22 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientDTO> listAll() {
+    public List<ClientDTO> listAllClients() {
         List<Client> client = clientRepository.findAll();
         return client.stream()
                 .map(this :: convertoToDTO)
                 .collect(Collectors.toList());
     }
 
-    public ClientDTO findById(Long id){
+    @Override
+    public ClientDTO findClientById(Long id) {
         Client client = clientRepository.findById(id).orElse(null);
         if(client != null){
             return convertoToDTO(client);
         }
         return null;
     }
+
 
     @Override
     public ClientDTO updateClient(Long id, ClientDTO clientDTO) {
@@ -83,16 +85,5 @@ public class ClientServiceImpl implements ClientService {
         clientDTO.setZipCode(client.getZipCode());
         clientDTO.setAddress(client.getAddress());
         return clientDTO;
-    }
-
-    private Client convertToEntity(ClientDTO clientDTO){
-        Client client = new Client();
-        clientDTO.setName(client.getName());
-        clientDTO.setCpf(client.getCpf());
-        clientDTO.setCellPhone(client.getCellPhone());
-        clientDTO.setBirthDate(client.getBirthDate());
-        clientDTO.setZipCode(client.getZipCode());
-        clientDTO.setAddress(client.getAddress());
-        return client;
     }
 }
