@@ -13,10 +13,13 @@ public class Enterprise {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private String cnpj;
 
     @Column
-    private String number;
+    private String numberEnterprise;
 
     @Column
     private String address;
