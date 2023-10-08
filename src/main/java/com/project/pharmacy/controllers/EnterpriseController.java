@@ -1,7 +1,6 @@
 package com.project.pharmacy.controllers;
 
 import com.project.pharmacy.dtos.EnterpriseDTO;
-import com.project.pharmacy.models.Enterprise;
 import com.project.pharmacy.services.impl.EnterpriseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;

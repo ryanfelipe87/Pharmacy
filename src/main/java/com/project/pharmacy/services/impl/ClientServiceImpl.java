@@ -1,6 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.ClientDTO;
+import com.project.pharmacy.exceptions.clients.ClientFindIdException;
+import com.project.pharmacy.exceptions.clients.ClientUpdateByIdException;
 import com.project.pharmacy.models.Client;
 import com.project.pharmacy.repositories.ClientRepository;
 import com.project.pharmacy.services.ClientService;
@@ -47,7 +49,7 @@ public class ClientServiceImpl implements ClientService {
         if(client != null){
             return convertoToDTO(client);
         }
-        return null;
+        throw new ClientFindIdException("Customer with ID " + id + " not found.");
     }
 
 
@@ -67,7 +69,7 @@ public class ClientServiceImpl implements ClientService {
 
             return convertoToDTO(client);
         }
-        return null;
+        throw new ClientUpdateByIdException("Update not realized, the id " + id + " of client not found.");
     }
 
     @Override

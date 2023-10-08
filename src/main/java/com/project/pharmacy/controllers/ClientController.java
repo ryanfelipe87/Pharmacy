@@ -1,6 +1,8 @@
 package com.project.pharmacy.controllers;
 
 import com.project.pharmacy.dtos.ClientDTO;
+import com.project.pharmacy.exceptions.clients.ClientFindIdException;
+import com.project.pharmacy.exceptions.clients.ClientUpdateByIdException;
 import com.project.pharmacy.services.impl.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -28,13 +30,23 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ClientDTO findByIdClient(@PathVariable Long id){
-        return clientService.findClientById(id);
+    public String findByIdClient(@PathVariable Long id){
+        try {
+            ClientDTO clientDTO = clientService.findClientById(id);
+            return clientDTO.toString();
+        }catch (ClientFindIdException exception){
+                return exception.getMessage();
+        }
     }
 
     @PutMapping("/{id}")
-    public ClientDTO updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO){
-        return clientService.updateClient(id, clientDTO);
+    public String updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO){
+        try {
+            ClientDTO clientDTO1 = clientService.updateClient(id, clientDTO);
+            return clientDTO1.toString();
+        }catch (ClientUpdateByIdException exception){
+            return exception.getMessage();
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -23,8 +23,6 @@ public class Login {
     @Column
     private String password;
 
-    private String confirmPassword;
-
     @OneToOne(mappedBy = "login")
     private Person person;
 }
