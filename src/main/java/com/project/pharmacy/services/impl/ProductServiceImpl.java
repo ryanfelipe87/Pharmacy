@@ -1,6 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.ProductDTO;
+import com.project.pharmacy.exceptions.product.ProductGetByIdException;
+import com.project.pharmacy.exceptions.product.ProductUpdateByIdException;
 import com.project.pharmacy.models.Product;
 import com.project.pharmacy.repositories.ProductRepository;
 import com.project.pharmacy.services.ProductService;
@@ -35,23 +37,23 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> listAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
-                .map(this :: convertToDTO)
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ProductDTO findClientById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
-        if(product != null){
+        if (product != null) {
             return convertToDTO(product);
         }
-        return null;
+        throw new ProductGetByIdException("Product not found with ID " + id + ".");
     }
 
     @Override
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Optional<Product> productOptional = productRepository.findById(id);
-        if(productOptional.isPresent()){
+        if (productOptional.isPresent()) {
             Product product = productOptional.get();
             product.setName(productDTO.getName());
             product.setDescription(productDTO.getDescription());
@@ -62,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 
             return convertToDTO(product);
         }
-        return null;
+        throw new ProductUpdateByIdException("Update no success, ID " + id + " not found.");
     }
 
     @Override
@@ -70,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    public ProductDTO convertToDTO(Product product){
+    public ProductDTO convertToDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(product.getName());
         productDTO.setDescription(product.getDescription());

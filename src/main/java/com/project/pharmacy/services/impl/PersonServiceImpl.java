@@ -1,6 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.PersonDTO;
+import com.project.pharmacy.exceptions.person.PersonGetByIdException;
+import com.project.pharmacy.exceptions.person.PersonUpdateByIdException;
 import com.project.pharmacy.models.Login;
 import com.project.pharmacy.models.Person;
 import com.project.pharmacy.repositories.LoginRepository;
@@ -40,22 +42,22 @@ public class PersonServiceImpl implements PersonService {
     public List<PersonDTO> listAllPerson() {
         List<Person> person = personRepository.findAll();
         return person.stream()
-                .map(this :: convertToDTO)
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public PersonDTO findPersonById(Long id){
+    public PersonDTO findPersonById(Long id) {
         Person person = personRepository.findById(id).orElse(null);
-        if(person != null){
+        if (person != null) {
             return convertToDTO(person);
         }
-        return null;
+        throw new PersonGetByIdException("Unsuccessfully search, ID " + id + " not found.");
     }
 
     @Override
     public PersonDTO updatePerson(Long id, PersonDTO personDTO) {
         Optional<Person> personOptional = personRepository.findById(id);
-        if(personOptional.isPresent()){
+        if (personOptional.isPresent()) {
             Person person = personOptional.get();
             person.setName(personDTO.getName());
             person.setGender(personDTO.getGender());
@@ -69,7 +71,7 @@ public class PersonServiceImpl implements PersonService {
             person = personRepository.save(person);
             return convertToDTO(person);
         }
-        return null;
+        throw new PersonUpdateByIdException("Update not realized, because ID " + id + " not found.");
     }
 
     @Override
@@ -78,7 +80,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
-    private PersonDTO convertToDTO(Person person){
+    private PersonDTO convertToDTO(Person person) {
         PersonDTO personDto = new PersonDTO();
         personDto.setName(person.getName());
         personDto.setCpf(person.getCpf());

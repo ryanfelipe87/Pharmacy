@@ -1,6 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.PurchaseDTO;
+import com.project.pharmacy.exceptions.purchase.PurchaseGetByIdException;
+import com.project.pharmacy.exceptions.purchase.PurchaseUpdateByIdException;
 import com.project.pharmacy.models.Purchase;
 import com.project.pharmacy.repositories.PurchaseRepository;
 import com.project.pharmacy.services.PurchaseService;
@@ -33,23 +35,23 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<PurchaseDTO> listAllPurchases() {
         List<Purchase> purchases = purchaseRepository.findAll();
         return purchases.stream()
-                .map(this :: convertoToDTO)
+                .map(this::convertoToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PurchaseDTO getPurchaseById(Long id) {
         Purchase purchase = purchaseRepository.findById(id).orElse(null);
-        if(purchase != null){
+        if (purchase != null) {
             return convertoToDTO(purchase);
         }
-        return null;
+        throw new PurchaseGetByIdException("Purchase with ID " + id + " not found.");
     }
 
     @Override
     public PurchaseDTO updatePurchase(Long id, PurchaseDTO purchaseDTO) {
         Optional<Purchase> purchaseOptional = purchaseRepository.findById(id);
-        if(purchaseOptional.isPresent()){
+        if (purchaseOptional.isPresent()) {
             Purchase purchase = purchaseOptional.get();
             purchase.setDatePurchase(purchaseDTO.getDatePurchase());
             purchase.setTotalPurchase(purchaseDTO.getTotalPurchase());
@@ -58,7 +60,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
             return convertoToDTO(purchase);
         }
-        return null;
+        throw new PurchaseUpdateByIdException("Update not realized, because ID " + id + " not found.");
     }
 
     @Override
@@ -66,7 +68,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseRepository.deleteById(id);
     }
 
-    public PurchaseDTO convertoToDTO(Purchase purchase){
+    public PurchaseDTO convertoToDTO(Purchase purchase) {
         PurchaseDTO purchaseDTO = new PurchaseDTO();
         purchaseDTO.setDatePurchase(purchase.getDatePurchase());
         purchaseDTO.setTotalPurchase(purchase.getTotalPurchase());

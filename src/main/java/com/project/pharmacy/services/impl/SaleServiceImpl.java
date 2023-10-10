@@ -1,6 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.SaleDTO;
+import com.project.pharmacy.exceptions.sale.SaleGetByIdException;
+import com.project.pharmacy.exceptions.sale.SaleUpdateByIdException;
 import com.project.pharmacy.models.Sale;
 import com.project.pharmacy.repositories.SaleRepository;
 import com.project.pharmacy.services.SaleService;
@@ -12,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class SaleServiceImpl implements SaleService{
+public class SaleServiceImpl implements SaleService {
 
     @Autowired
     private SaleRepository saleRepository;
@@ -32,23 +34,23 @@ public class SaleServiceImpl implements SaleService{
     public List<SaleDTO> listAllSales() {
         List<Sale> sales = saleRepository.findAll();
         return sales.stream()
-                .map(this :: convertToDTO)
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public SaleDTO getSaleById(Long id) {
         Sale sale = saleRepository.findById(id).orElse(null);
-        if(sale != null){
+        if (sale != null) {
             return convertToDTO(sale);
         }
-        return null;
+        throw new SaleGetByIdException("Sale with ID " + id + " not found.");
     }
 
     @Override
     public SaleDTO updateSale(Long id, SaleDTO saleDTO) {
         Optional<Sale> saleOptional = saleRepository.findById(id);
-        if(saleOptional.isPresent()){
+        if (saleOptional.isPresent()) {
             Sale sale = saleOptional.get();
             sale.setDateSale(saleDTO.getDateSale());
             sale.setTotalSale(saleDTO.getTotalSale());
@@ -57,7 +59,7 @@ public class SaleServiceImpl implements SaleService{
 
             return convertToDTO(sale);
         }
-        return null;
+        throw new SaleUpdateByIdException("Update not realized, because the ID " + id + " not found.");
     }
 
     @Override
@@ -65,7 +67,7 @@ public class SaleServiceImpl implements SaleService{
         saleRepository.deleteById(id);
     }
 
-    public SaleDTO convertToDTO(Sale sale){
+    public SaleDTO convertToDTO(Sale sale) {
         SaleDTO saleDTO = new SaleDTO();
         saleDTO.setDateSale(sale.getDateSale());
         saleDTO.setTotalSale(sale.getTotalSale());

@@ -1,6 +1,8 @@
 package com.project.pharmacy.controllers;
 
 import com.project.pharmacy.dtos.ProductDTO;
+import com.project.pharmacy.exceptions.product.ProductGetByIdException;
+import com.project.pharmacy.exceptions.product.ProductUpdateByIdException;
 import com.project.pharmacy.services.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -17,28 +19,38 @@ public class ProductController {
     private ProductServiceImpl productService;
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<Void> createProduct(@RequestBody ProductDTO productDTO) {
         productService.createProduct(productDTO);
         return new ResponseEntity<Void>(HttpStatusCode.valueOf(200));
     }
 
     @GetMapping
-    public List<ProductDTO> listAllProducts(){
+    public List<ProductDTO> listAllProducts() {
         return productService.listAllProducts();
     }
 
     @GetMapping(path = "/{id}")
-    public ProductDTO filterProductById(@PathVariable Long id){
-        return productService.findClientById(id);
+    public String filterProductById(@PathVariable Long id) {
+        try {
+            ProductDTO productDTO = productService.findClientById(id);
+            return productDTO.toString();
+        } catch (ProductGetByIdException exception) {
+            return exception.getMessage();
+        }
     }
 
     @PutMapping(path = "/{id}")
-    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
-        return productService.updateProduct(id, productDTO);
+    public String updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        try {
+            ProductDTO productDTO1 = productService.updateProduct(id, productDTO);
+            return productDTO1.toString();
+        } catch (ProductUpdateByIdException exception) {
+            return exception.getMessage();
+        }
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 }

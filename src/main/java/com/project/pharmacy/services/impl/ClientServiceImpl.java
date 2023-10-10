@@ -1,8 +1,8 @@
 package com.project.pharmacy.services.impl;
 
 import com.project.pharmacy.dtos.ClientDTO;
-import com.project.pharmacy.exceptions.clients.ClientFindIdException;
-import com.project.pharmacy.exceptions.clients.ClientUpdateByIdException;
+import com.project.pharmacy.exceptions.client.ClientGetByIdException;
+import com.project.pharmacy.exceptions.client.ClientUpdateByIdException;
 import com.project.pharmacy.models.Client;
 import com.project.pharmacy.repositories.ClientRepository;
 import com.project.pharmacy.services.ClientService;
@@ -39,17 +39,17 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientDTO> listAllClients() {
         List<Client> client = clientRepository.findAll();
         return client.stream()
-                .map(this :: convertoToDTO)
+                .map(this::convertoToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ClientDTO findClientById(Long id) {
         Client client = clientRepository.findById(id).orElse(null);
-        if(client != null){
+        if (client != null) {
             return convertoToDTO(client);
         }
-        throw new ClientFindIdException("Customer with ID " + id + " not found.");
+        throw new ClientGetByIdException("Customer with ID " + id + " not found.");
     }
 
 
@@ -69,7 +69,7 @@ public class ClientServiceImpl implements ClientService {
 
             return convertoToDTO(client);
         }
-        throw new ClientUpdateByIdException("Update not realized, the id " + id + " of client not found.");
+        throw new ClientUpdateByIdException("Update not realized, the ID " + id + " of client not found.");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
-    private ClientDTO convertoToDTO(Client client){
+    private ClientDTO convertoToDTO(Client client) {
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setName(client.getName());
         clientDTO.setCpf(client.getCpf());
